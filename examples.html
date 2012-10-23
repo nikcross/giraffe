@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Giraffe Reference Examples</title>
+<script src="canvas.js"></script>
+<script src="canvas-text.js"></script>
+<script src="giraffe.js"></script>
+<script src="giraffe-animation.js"></script>
+<script src="giraffe-interactive.js"></script>
+<script>
+var canvas;
+function init() {
+	canvas = new Canvas("exampleCanvas");
+  	Giraffe.Interactive.setInteractive(canvas);
+  	Giraffe.setAnimated(canvas);
+	canvas.startAnimation(20,100,true);
+	
+	loadExample("examples/drag-and-drop");
+}
+
+function loadExample(examplePath) {
+	canvas.graphicsObjects = [];
+
+	var e = document.createElement("script");
+	e.src = examplePath+".js?ts="+new Date().getTime();
+	e.type="text/javascript";
+	document.getElementsByTagName("head")[0].appendChild(e);
+	return false;
+}
+
+function exampleLoaded() {
+
+	scriptText = new String(example.run);
+	scriptText = scriptText.substring( scriptText.indexOf("//START")+8,scriptText.indexOf("//END") );
+	document.getElementById("exampleScript").value=scriptText;
+	
+	example.run();
+}
+
+</script>
+
+</head>
+<body onload="init();">
+<table><tr>
+<td style="width: 200px;">
+<h3>Basic</h3>
+<ul>
+<li><a href="#" onclick="return loadExample('examples/animation-flip');">Flip</a></li>
+</ul>
+<h3>Animation</h3>
+<ul>
+<li><a href="#" onclick="return loadExample('examples/animation-flip');">Flip</a></li>
+<li><a href="#" onclick="return loadExample('examples/animation-loops');">Loops</a></li>
+<li><a href="#" onclick="return loadExample('examples/animation-sequences');">Sequences</a></li>
+</ul>
+<h3>Interactive</h3>
+<ul>
+<li><a href="#" onclick="return loadExample('examples/animation-flip');">Flip</a></li>
+<li><a href="#" onclick="return loadExample('examples/animation-flip');">Flip</a></li>
+<li><a href="#" onclick="return loadExample('examples/animation-flip');">Flip</a></li>
+</ul>
+</td>
+<td><canvas id="exampleCanvas" width="400" height="400" style="border: solid 1px;"></canvas></td>
+</tr>
+<tr><td colspan="2">
+<textarea id="exampleScript" cols="120" rows="10"></textarea>
+</td></tr></table>
+</body>
+</html>
