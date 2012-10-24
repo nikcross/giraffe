@@ -1,3 +1,5 @@
+example = { run: function() {
+//START
 draggableLine = {};
 dl = draggableLine;
 dl.p1 = new Circle(100,80,5).
@@ -111,3 +113,7 @@ dr.processFrame = function() {
 canvas.makeDraggable(dr.rectangle);
 canvas.makeDraggable(dr.p1);
 canvas.addAnimationListener(dr);
+//END
+}}
+
+exampleLoaded();

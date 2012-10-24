@@ -1,3 +1,5 @@
+example = { run: function() {
+//START
 Giraffe.PolyMorphSequence = function(target,data,frames,steps) {
 	this.frames = frames;
 	this.target = target;
@@ -126,3 +128,7 @@ var data = [100,20,50,40,30,50,90,120,150];
 
 chart = new Chart(500,400,data,"X Axis","Y Axis",["a","b","c"],["1","2","3","4"]);
 chart.init();
+//END
+}}
+
+exampleLoaded();

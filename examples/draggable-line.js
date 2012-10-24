@@ -1,3 +1,5 @@
+example = { run: function() {
+//START
 draggableLine = {};
 dl = draggableLine;
 dl.p1 = new Circle(100,80,5).setFillColor("rgba(0,0,255,0.5)").setColor("rgba(0,0,255,0.5)");
@@ -28,3 +30,7 @@ dl.processFrame = function() {
 canvas.makeDraggable(dl.p1);
 canvas.makeDraggable(dl.p2);
 canvas.addAnimationListener(dl);
+//END
+}}
+
+exampleLoaded();

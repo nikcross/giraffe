@@ -1,3 +1,5 @@
+example = { run: function() {
+//START
 circle =  new Circle(100,100,10).setFillColor("blue");
 canvas.add(circle);
 
@@ -42,3 +44,8 @@ explode.doNext = function() {
 }
 
 rotate.start();
+
+//END
+}}
+
+exampleLoaded();

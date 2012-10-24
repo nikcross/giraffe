@@ -1,3 +1,5 @@
+example = { run: function() {
+//START
 canvas.add( new Rectangle(0,0,500,350).setFillColor("black").setColor("red") );
 
 info = new Text(20,20,"Info",20).setFillColor("black");
@@ -40,3 +42,7 @@ canvas.add( rightButton );
 canvas.add( bowl );
 canvas.add( trackBall );
 canvas.add( positionBall );
+//END
+}}
+
+exampleLoaded();
