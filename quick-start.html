@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Giraffe Reference Examples</title>
+<script src="canvas.js"></script>
+<script src="canvas-text.js"></script>
+<script src="giraffe.js"></script>
+<script src="giraffe-animation.js"></script>
+<script src="giraffe-interactive.js"></script>
+<script>
+var canvas;
+function init() {
+	canvas = new Canvas("exampleCanvas");
+	
+	// include the following line to allow user interaction with the canvas
+  	//Giraffe.Interactive.setInteractive(canvas);
+  	
+  	// create a circle as x=20px, y=30px with radius 10px
+	myCircle = new Circle(20,30,10);
+	// set the circle to move right 1px each frame  
+	myCircle.animate = function(frame) {
+		this.x = this.x+1;
+	}
+	// add the circle to the canvas
+	canvas.add( myCircle );
+  	
+  	// include the following to lines to allow animation
+  	Giraffe.setAnimated(canvas); 
+	canvas.startAnimation(20,100,true);
+}
+</script>
+</head>
+<body onload="init();">
+<h1>Giraffe Quick Start</h1>
+<canvas id="exampleCanvas" width="400" height="100" style="border: solid 1px;"></canvas>
+</body>
+</html>
