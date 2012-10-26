@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Giraffe Object Library</title>
+<script src="../js/canvas.js"></script>
+<script src="../js/canvas-text.js"></script>
+<script src="../js/giraffe.js"></script>
+<script src="../js/giraffe-animation.js"></script>
+<script src="../js/giraffe-interactive.js"></script>
+
+<script src="DashedLine.object.js"></script>
+<script src="ClearanceCircle.object.js"></script>
+<script src="Beaker.object.js"></script>
+<script src="Clock.object.js"></script>
+<script src="ClockFace.object.js"></script>
+<script src="Cog.object.js"></script>
+<script src="Compass.object.js"></script>
+<script src="Door.object.js"></script>
+<script src="GeneView.object.js"></script>
+<script src="CompassFace.object.js"></script>
+<script src="SolarCompass.object.js"></script>
+<script src="Ladder.object.js"></script>
+<script src="Thermometer.object.js"></script>
+<script src="Dial.object.js"></script>
+<script>
+var canvas;
+function init() {
+	canvas = new Canvas("exampleCanvas");
+  	Giraffe.Interactive.setInteractive(canvas);
+  	Giraffe.setAnimated(canvas);
+	canvas.startAnimation(20,100,true);
+	
+	dashedLine = new DashedLine(10,10,150,150);
+	clearanceCircle = new ClearanceCircle(110,110,100,45,270);
+	beaker = new Beaker(10,10);
+	beaker.setLevel(50);
+	clock = new Clock(10,10,"clock.png");
+	clockFace = new ClockFace(10,10);
+	cog = new Cog(10,10);
+	compass = new Compass(10,10,"compass.png");
+	door = new Door(100,300);
+	geneView = new GeneView(10,10);
+	compassFace = new CompassFace(10,10);
+	solarCompass = new SolarCompass(10,10);
+	ladder = new Ladder(100,300);
+	thermometer = new Thermometer(10,10);
+	dial = new Dial(10,10);
+}
+
+function showObject(objectName) {
+	canvas.graphicsObjects = [];
+
+	eval( "canvas.add( "+objectName+" );" );
+	
+	return false;
+}
+
+</script>
+
+</head>
+<body onload="init();">
+<table><tr>
+<td style="width: 200px;">
+<h3>Objects</h3>
+<ul>
+<li><a href="#" onclick="return showObject('dashedLine');">Dashed Line</a></li>
+<li><a href="#" onclick="return showObject('clearanceCircle');">Clearance Circle</a></li>
+<li><a href="#" onclick="return showObject('beaker');">Beaker</a></li>
+<li><a href="#" onclick="return showObject('clock');">Clock</a></li>
+<li><a href="#" onclick="return showObject('clockFace');">Clock Face</a></li>
+<li><a href="#" onclick="return showObject('cog');">Cog</a></li>
+<li><a href="#" onclick="return showObject('compass');">Compass</a></li>
+<li><a href="#" onclick="return showObject('door');">Door</a></li>
+<li><a href="#" onclick="return showObject('geneView');">GeneView</a></li>
+<li><a href="#" onclick="return showObject('compassFace');">CompassFace</a></li>
+<li><a href="#" onclick="return showObject('solarCompass');">SolarCompass</a></li>
+<li><a href="#" onclick="return showObject('ladder');">Ladder</a></li>
+<li><a href="#" onclick="return showObject('thermometer');">Thermometer</a></li>
+<li><a href="#" onclick="return showObject('dial');">Dial</a></li>
+</ul>
+</td>
+<td><canvas id="exampleCanvas" width="400" height="400" style="border: solid 1px;"></canvas></td>
+</tr>
+</table>
+</body>
+</html>

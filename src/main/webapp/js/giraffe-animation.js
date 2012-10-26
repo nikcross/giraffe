@@ -1,3 +1,65 @@
+Giraffe.X=0;
+Giraffe.Y=1;
+Giraffe.DEG_TO_RAD = Math.PI/180;
+
+Giraffe.setAnimated = function(canvas) {
+  canvas.frame = 0;
+  canvas.interval = null;
+  canvas.frames = 0;
+  canvas.looped = true;
+  canvas.animationListeners = new Array();
+
+  canvas.addAnimationListener = function(listener) {
+  	this.animationListeners[this.animationListeners.length]=listener;
+  }
+  canvas.removeAnimationListener = function(listener) {
+	for(this.loop=0;this.loop<this.animationListeners.length;this.loop++)
+    {
+		if(this.animationListeners[this.loop]==listener) {
+			this.animationListeners.splice(this.loop,1);
+		}
+	}
+  }
+
+  canvas.startAnimation = function(fps,frames,looped)
+  {
+    this.frame = 0;
+    this.frames = frames;
+    this.looped = looped;
+    this.interval = setInterval("Giraffe.canvases[\""+this.id+"\"].animate();",1000/fps);
+  }
+
+  canvas.stopAnimation = function()
+  {
+    clearInterval( this.interval );
+  }
+
+  canvas.animate = function()
+  {
+    for(this.loop=0;this.loop<this.animationListeners.length;this.loop++)
+    {
+      this.animationListeners[this.loop].processFrame(this.frame);
+    }
+    for(this.loop=0;this.loop<this.graphicsObjects.length;this.loop++)
+    {
+      this.graphicsObjects[this.loop].animate(this.frame);
+    }
+    this.repaint();
+    this.frame++;
+    if(this.frame>=this.frames)
+    {
+      if(this.looped==true)
+      {
+        this.frame=0;
+      }
+      else
+      {
+        this.stopAnimation();
+      }
+    }
+  }
+}
+
 /**
  * @class
  */

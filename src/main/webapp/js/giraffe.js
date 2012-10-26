@@ -553,6 +553,7 @@ function Arc(x,y,startAngle,sweepAngle,radius)
 	   */
   this.x=x;
   this.y=y;
+  this.closed=true;
   this.startAngle=startAngle;
   this.sweepAngle=sweepAngle;
   this.radius=radius;
@@ -570,13 +571,17 @@ function Arc(x,y,startAngle,sweepAngle,radius)
     var sweepAngleRad = ((this.startAngle+this.sweepAngle)%360)*2*Math.PI/360;
 
     this.canvas.strokeStyle = this.color;
-    this.canvas.moveTo(0,0);
-    this.canvas.lineTo(
-      Math.cos(startAngleRad)*radius,
-      Math.sin(startAngleRad)*radius
-    );
+    if(this.closed==true) {
+    	this.canvas.moveTo(0,0);
+	    this.canvas.lineTo(
+    		Math.cos(startAngleRad)*radius,
+      		Math.sin(startAngleRad)*radius
+    	);
+    }
     this.canvas.arc(0,0,this.radius,startAngleRad,sweepAngleRad,false);
-    this.canvas.lineTo( 0,0 );
+    if(this.closed==true) {
+    	this.canvas.lineTo( 0,0 );
+    }
     this.canvas.closePath()
     if(this.fillColor!=null)
     {
@@ -613,6 +618,14 @@ function Arc(x,y,startAngle,sweepAngle,radius)
 	} else {
 		return false;
 	}
+  }
+  this.setClosed = function() {
+  	this.closed=true;
+  	return this;
+  }
+  this.setOpen = function() {
+  	this.closed=false;
+  	return this;
   }
 }
 Arc.prototype = new GraphicsObject();
