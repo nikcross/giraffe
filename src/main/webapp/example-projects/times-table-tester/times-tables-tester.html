@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Times Tables Tester</title>
+<script src="giraffe-0.0.1.min.js"></script>
+<script src="times-tables-tester.js"></script>
+<script src="number-pad.js"></script>
+<script src="table-selector.js"></script>
+<script src="start-message.js"></script>
+<script src="stop-watch.js"></script>
+<script>
+var canvas;
+function init() {
+	canvas = new Canvas("canvas");
+  	Giraffe.Interactive.setInteractive(canvas);
+  	Giraffe.setAnimated(canvas);
+	canvas.startAnimation(20,100,true);
+	
+	startTimesTablesTester();
+}
+</script>
+
+</head>
+<body onload="init();">
+<canvas id="canvas" width="1000" height="600" style="border: solid 1px;"></canvas>
+</body>
+</html>

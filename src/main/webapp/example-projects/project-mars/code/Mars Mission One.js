@@ -1,0 +1,11 @@
+robot.turnLeft();
+robot.forward();
+robot.forward();
+robot.forward();
+robot.forward();
+robot.turnRight();
+robot.forward();
+robot.turnLeft();
+robot.forward();
+robot.turnRight();
+robot.forward();

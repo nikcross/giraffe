@@ -1,65 +1,3 @@
-Giraffe.X=0;
-Giraffe.Y=1;
-Giraffe.DEG_TO_RAD = Math.PI/180;
-
-Giraffe.setAnimated = function(canvas) {
-  canvas.frame = 0;
-  canvas.interval = null;
-  canvas.frames = 0;
-  canvas.looped = true;
-  canvas.animationListeners = new Array();
-
-  canvas.addAnimationListener = function(listener) {
-  	this.animationListeners[this.animationListeners.length]=listener;
-  }
-  canvas.removeAnimationListener = function(listener) {
-	for(this.loop=0;this.loop<this.animationListeners.length;this.loop++)
-    {
-		if(this.animationListeners[this.loop]==listener) {
-			this.animationListeners.splice(this.loop,1);
-		}
-	}
-  }
-
-  canvas.startAnimation = function(fps,frames,looped)
-  {
-    this.frame = 0;
-    this.frames = frames;
-    this.looped = looped;
-    this.interval = setInterval("Giraffe.canvases[\""+this.id+"\"].animate();",1000/fps);
-  }
-
-  canvas.stopAnimation = function()
-  {
-    clearInterval( this.interval );
-  }
-
-  canvas.animate = function()
-  {
-    for(this.loop=0;this.loop<this.animationListeners.length;this.loop++)
-    {
-      this.animationListeners[this.loop].processFrame(this.frame);
-    }
-    for(this.loop=0;this.loop<this.graphicsObjects.length;this.loop++)
-    {
-      this.graphicsObjects[this.loop].animate(this.frame);
-    }
-    this.repaint();
-    this.frame++;
-    if(this.frame>=this.frames)
-    {
-      if(this.looped==true)
-      {
-        this.frame=0;
-      }
-      else
-      {
-        this.stopAnimation();
-      }
-    }
-  }
-}
-
 /**
  * @class
  */
@@ -75,7 +13,22 @@ Giraffe.Transition = function(target,frames) {
 		this.currentFrame=0;
 		this.play=true;
 	};
-	this.processFrame = function(frame){};
+	this.process = function(frame){};
+	
+	this.processFrame = function() {
+		if(this.play==false) { return; };
+		this.currentFrame++;
+		if(this.currentFrame==this.frames+1) {
+			this.unregister();
+			this.doNext();
+		}
+		if(this.currentFrame>this.frames) {
+			return false;
+		}
+		
+		this.process(this.currentFrame);
+	}
+	
 	this.doNext = function(){};
 	this.register = function(){
 		this.canvas.addAnimationListener(this);
@@ -101,18 +54,8 @@ Giraffe.FlipOutX = function(target,frames) {
 	/**
 	 * @private
 	 */
-	this.processFrame = function(frame) {
-		if(this.play==false) { return; };
-		this.currentFrame++;
-		if(this.currentFrame>this.frames) {
-			this.target.visible=false;
-			this.unregister();
-			this.doNext();
-			return false;
-		}
-		
-		this.target.scaleX = 1-((1*this.currentFrame)/this.frames);
-		return true;
+	this.process = function(frame) {
+		this.target.scaleX = 1-((1*frame)/this.frames);
 	}
 }
 Giraffe.FlipOutX.prototype = new Giraffe.Transition();
@@ -124,20 +67,8 @@ Giraffe.FlipInX = function(target,frames) {
 	this.register();
 	this.currentFrame=0;
 
-	this.processFrame = function(frame) {
-		if(this.play==false) { return; };
-		if(this.currentFrame==0) {
-			this.target.visible=true;
-		}
-		this.currentFrame++;
-		if(this.currentFrame>this.frames) {
-			this.unregister();
-			this.doNext();
-			return false;
-		}
-		
-		this.target.scaleX = (1*this.currentFrame)/this.frames;
-		return true;
+	this.process = function(frame) {
+		this.target.scaleX = (1*frame)/this.frames;
 	}
 }
 Giraffe.FlipInX.prototype = new Giraffe.Transition();
@@ -149,18 +80,8 @@ Giraffe.FlipOutY = function(target,frames) {
 	this.register();
 	this.currentFrame=0;
 
-	this.processFrame = function(frame){
-		if(this.play==false) { return; };
-		this.currentFrame++;
-		if(this.currentFrame>this.frames) {
-			this.target.visible=false;
-			this.unregister();
-			this.doNext();
-			return false;
-		}
-		
-		this.target.scaleY = 1-((1*this.currentFrame)/this.frames);
-		return true;
+	this.process = function(frame){
+		this.target.scaleY = 1-((1*frame)/this.frames);
 	}
 }
 Giraffe.FlipOutY.prototype = new Giraffe.Transition();
@@ -172,20 +93,8 @@ Giraffe.FlipInY = function(target,frames) {
 	this.register();
 	this.currentFrame=0;
 
-	this.processFrame = function(frame) {
-		if(this.play==false) { return; };
-		if(this.currentFrame==0) {
-			this.target.visible=true;
-		}
-		this.currentFrame++;
-		if(this.currentFrame>this.frames) {
-			this.unregister();
-			this.doNext();
-			return false;
-		}
-		
-		this.target.scaleY = (1*this.currentFrame)/this.frames;
-		return true;
+	this.process = function(frame) {
+		this.target.scaleY = (1*frame)/this.frames;
 	}
 }
 Giraffe.FlipInY.prototype = new Giraffe.Transition();
@@ -198,15 +107,7 @@ Giraffe.MoveSequence = function(target,frames,matrix) {
 	this.register();
 	this.currentFrame=0;
 
-	this.processFrame = function(frame) {
-		if(this.play==false) { return; };
-		this.currentFrame++;
-		if(this.currentFrame>this.frames) {
-			this.unregister();
-			this.doNext();
-			return false;
-		}
-		
+	this.process = function(frame) {
 		if(this.matrix) {
 			this.target.x+=this.matrix[Giraffe.X];
 			this.target.y+=this.matrix[Giraffe.Y];
@@ -214,7 +115,6 @@ Giraffe.MoveSequence = function(target,frames,matrix) {
 			this.target.x+=this.target.vx;
 			this.target.y+=this.target.vy;
 		}
-		return true;
 	}
 }
 Giraffe.MoveSequence.prototype = new Giraffe.Transition();
@@ -227,17 +127,8 @@ Giraffe.RotationSequence = function(target,frames,steps) {
 	this.register();
 	this.currentFrame=0;
 
-	this.processFrame = function(frame) {
-		if(this.play==false) { return; };
-		this.currentFrame++;
-		if(this.currentFrame>this.frames) {
-			this.unregister();
-			this.doNext();
-			return false;
-		}
-		
+	this.process = function(frame) {
 		this.target.setRotation( this.target.rotation+(Giraffe.DEG_TO_RAD*this.steps) );
-		return true;
 	}
 }
 Giraffe.RotationSequence.prototype = new Giraffe.Transition();
@@ -249,14 +140,7 @@ Giraffe.ExplodeSequence = function(target,frames) {
 	this.register();
 	this.currentFrame=0;
 
-	this.processFrame = function(frame) {
-		if(this.play==false) { return; };
-		this.currentFrame++;
-		if(this.currentFrame>this.frames) {
-			this.unregister();
-			this.doNext();
-			return false;
-		}
+	this.process = function(frame) {
 		if(!this.parts) {
 			this.parts = getExplodingParts(target);
 		}
@@ -275,8 +159,6 @@ Giraffe.ExplodeSequence = function(target,frames) {
 		if(hasMinVelocity==false) {
 			this.currentFrame = this.frames;
 		}
-		
-		return true;
 	}
 	
 	var getExplodingParts = function(composite,parts) {

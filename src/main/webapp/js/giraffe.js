@@ -127,7 +127,7 @@ function Canvas(canvasElementId)
    * Stretches a canvas to fit a window while maintaining the design aspect ratio
    * @param screenDesignSize {Giraffe.Size} the width and height intended for the canvas
    */
-  this.stretchToFitWindow = function(screenDesignSize) {
+  this.stretchToFitWindow = function() {
 	 	var designWidth = screen.width;
 	 	var designHeight = screen.height;
 	 	
@@ -184,6 +184,9 @@ function GraphicsObject(x,y)
   this._repaint = function()
   {
     this.canvasParent._store();
+    if(this.canvas==undefined) {
+    	this.canvas = this.canvasParent.canvasContext;
+    }
     this.canvas.translate(this.x,this.y);
     if(this.scaleX!=1 || this.scaleY!=1)
     {

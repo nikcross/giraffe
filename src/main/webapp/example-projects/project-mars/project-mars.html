@@ -1,0 +1,108 @@
+<html>
+<head>
+<title>Project Mars</title>
+<script type="text/javascript" charset="utf-8" src="giraffe-0.0.1.js"></script>
+<script type="text/javascript" charset="utf-8" src="code-mirror-2.3/codemirror.js"></script>
+<link rel="stylesheet" href="code-mirror-2.3/codemirror.css">
+<link rel="stylesheet" href="code-mirror-2.3/theme/rubyblue.css">
+<link rel="stylesheet" href="code-mirror-2.3/util/dialog.css">
+<script type="text/javascript" src="code-mirror-2.3/mode/javascript/javascript.js"></script>
+<script type="text/javascript" src="code-mirror-2.3/util/search.js"></script>
+<script type="text/javascript" src="code-mirror-2.3/util/searchcursor.js"></script>
+<script type="text/javascript" src="code-mirror-2.3/util/foldcode.js"></script>
+<script type="text/javascript" src="code-mirror-2.3/util/dialog.js"></script>
+
+<style>
+.CodeMirror-scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  height: 450px;
+  width: 250px;
+  position: relative;
+  outline: none;
+}
+</style>
+
+<script type="text/javascript" src="mars.js"></script>
+<script type="text/javascript" src="robot.js"></script>
+
+<script type="text/javascript">
+
+var foldFunc;
+var codeMirror; 
+function init() {
+    foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
+    codeMirror = CodeMirror.fromTextArea(
+    	document.getElementById("code"),
+    	{ 
+    		theme: 'rubyblue',
+    		lineNumbers: true,
+    		matchBrackets: true,
+    		onGutterClick: foldFunc
+    	}
+    );
+
+  	canvas = new Canvas("canvas");
+  	Giraffe.setAnimated(canvas);
+	canvas.startAnimation(20,100,true);
+	
+	createMars(canvas);
+	robot = new Robot(2,2);
+	mars.add( robot );
+	
+	print("Project Mars is ready");
+
+}
+
+function run() {
+		if(robot.running==true) {
+			print("Robot currently running program. Please Wait.");
+			return;
+		}
+
+		robot.clearProgram();
+		try{
+	    	eval( codeMirror.getValue());
+	    } catch (e) {
+	      print(e);
+	      return;
+	    }
+	    print("Program Loaded")
+	    robot.run();
+}
+
+function print(message) {
+  document.getElementById("console").innerHTML="<b>"+message+"</b><br/>"+document.getElementById("console").innerHTML;
+}
+function clearConsole() {
+  document.getElementById("console").innerHTML="";
+  return false;
+}
+
+</script>
+</head>
+<body onload="init();" style="background-color: #AA0000; color: #F0F0F0">
+<table style="border: solid 1px;">
+	<tr>
+<td colspan="2"  style="border: solid 1px;"><h1>Project Mars</h1></td>
+	</tr>
+	<tr valign="top">
+		<td style="border: solid 1px; width: 500px;">
+			<input type="button" value="Run" onclick="return run();"><br/>
+			<textarea id="code">
+robot.turnLeft();
+robot.forward();
+robot.turnRight();
+			</textarea>
+		</td>
+		<td style="border: solid 1px;"><canvas id="canvas" width="500" height="500"></canvas></td>
+	</tr>
+	<tr>
+		<td colspan="2" style="border: solid 1px; width: 500px;">
+			<input type="button" value="Clear" onclick="return clearConsole();">
+			<div id="console"></div>
+		</td>	
+	</tr>
+</table>
+</body>
+</html>

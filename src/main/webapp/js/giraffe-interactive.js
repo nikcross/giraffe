@@ -88,7 +88,7 @@ Giraffe.Interactive = {
 		
 		for(this.loop=0;this.loop<self.graphicsObjects.length;this.loop++)
 	    {
-		  if(self.graphicsObjects[this.loop].isInside(event.x,event.y)) {
+		  if(self.graphicsObjects[this.loop].visible===true && self.graphicsObjects[this.loop].isInside(event.x,event.y)) {
 			self.graphicsObjects[this.loop].onMousePressed(event.x,event.y);
 		  }
 		 }
